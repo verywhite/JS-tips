@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>图片放大展示</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<style>
+*{
+	margin:0;
+	padding:0;
+}
+#show_pic{
+	width:500px;
+	height:500px;
+	margin:0 auto;
+	position: absolute;
+    
+}
+.small_pic{
+	float:left;
+
+}
+.big_pic{
+	width:240px;
+	height:240px;
+	border:1px solid;
+	float:left;
+	margin-left:10px;
+	display:none;
+	overflow:hidden;
+}
+.big_pic img{
+	position: relative;
+}
+.cover{
+	position:absolute;
+	border:1px solid;
+	z-index:3;
+	left:0;
+	top:0;
+	cursor:pointer;
+}
+.float_span{
+	position:absolute;
+	z-index: 1;
+	background: #7FC9FFFF;
+	opacity:0.5;
+	display:none;
+	border:1px solid;
+}
+</style>
+<script type='text/javascript'>
+	function getchilde(par,childc){
+		var allclass=par.getElementsByTagName('*');
+		var result=[];
+		for(var i=0;i<allclass.length;i++){
+			if(allclass[i].className==childc)
+				result.push(allclass[i]);
+		}
+		return result;
+	}
+	window.onload=function (){
+		var sp=document.getElementById('show_pic');
+		var c=getchilde(sp,'cover')[0];
+		var fs=getchilde(sp,'float_span')[0];
+		var small=getchilde(sp,'small_pic')[0];
+		var smallp=small.getElementsByTagName('img')[0];
+		var big=getchilde(sp,'big_pic')[0];
+		var bigp=big.getElementsByTagName('img')[0];
+		var smallpw,smallph,bigpw,bigph;
+		var btn=true;
+		c.style.width=smallp.offsetWidth+'px';
+		c.style.height=smallp.offsetHeight+'px';
+		c.onmouseover=function(){
+			fs.style.display='block';
+			big.style.display='block';
+			if(btn){
+				smallph=smallp.offsetHeight;
+				smallpw=smallp.offsetWidth;
+				bigpw=bigp.offsetWidth;
+				bigph=bigp.offsetHeight;
+				smallw=small.offsetWidth;
+				smallh=small.offsetHeight;
+				fsw=Math.ceil(smallpw/bigpw*smallw);
+				fsh=Math.ceil(smallph/bigph*smallh);
+				fs.style.width=fsw+'px';//浮动框的宽
+				fs.style.height=fsh+'px';//浮动框的高
+				btn=false;
+			}
+		}
+		c.onmouseout=function(){
+			fs.style.display='none';
+			big.style.display='none';
+		}
+		c.onmousemove=function(e){
+			var pos=e||event;
+			var left=pos.clientX-sp.offsetLeft-fs.offsetWidth/2;
+			var top=pos.clientY-sp.offsetTop-fs.offsetHeight/2;
+			if(left<0){
+				left=0;//避免超过左边框
+			}
+			else if(left>c.offsetWidth-fs.offsetWidth){
+				left=c.offsetWidth-fs.offsetWidth;
+			}
+			if(top<0){
+				top=0;
+			}
+			else if(top>c.offsetHeight-fs.offsetHeight){
+				top=c.offsetHeight-fs.offsetHeight;
+			}
+			fs.style.left=left+'px';
+			fs.style.top=top+'px';
+			console.log(left);
+			var bigx=left/c.offsetWidth;
+			var bigy=top/c.offsetHeight;
+			console.log(bigx);
+			bigp.style.left=-bigx*(bigp.offsetWidth)+'px';
+			bigp.style.top=-bigy*(bigp.offsetHeight)+'px';
+			console.log(bigp.style.left);
+		}
+	}
+</script>
+</head>
+<body>
+    <div id='show_pic'>
+    	<span class='cover'></span>
+    	<span class='float_span'></span>
+    	<div class='small_pic'>
+    		<img src='CSS源代码/2/2.10/img/small.jpg'>
+    	</div>
+    	<div class='big_pic'>
+    		<img src='CSS源代码/2/2.10/img/big.jpg'>
+    	</div>
+    </div>
+</body>
+</html>
