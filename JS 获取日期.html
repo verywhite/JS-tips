@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>日期</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script>
+	window.onload=function(){
+		showtime();
+	}
+	function checktime(it){
+		if(it<10){
+			it='0'+it;
+		}
+		return it;
+	}
+	function showtime(){
+		var date=new Date();
+		var endtime=new Date(2017,12,22);
+		var year=date.getFullYear();
+		var month=date.getMonth()+1;
+		var day=date.getDate();
+		var h=date.getHours();
+		var m=date.getMinutes();
+		var s=date.getSeconds();
+		h=checktime(h);
+		m=checktime(m);
+		s=checktime(s);
+		var week=date.getDay();
+		var weekdate=new Array(7);
+		weekdate[0]='星期天';
+		weekdate[1]='星期一';
+		weekdate[2]='星期二';
+		weekdate[3]='星期三';
+		weekdate[4]='星期四';
+		weekdate[5]='星期五';
+		weekdate[6]='星期六';
+		var show2=Math.floor((endtime.getTime()-date.getTime())/(24*60*60*1000));
+		var showhour=Math.floor((endtime.getTime()-date.getTime())/(60*60*1000)%24);
+		var showminute=Math.floor((endtime.getTime()-date.getTime())/(60*1000)%60);
+		var showsecond=Math.floor((endtime.getTime()-date.getTime())/(1000)%60);
+		showhour=checktime(showhour);
+		showminute=checktime(showminute);
+		showsecond=checktime(showsecond);
+		var show=document.getElementById('show');
+		show.innerHTML=year+"年"+month+'月'+day+'日'+h+':'+m+':'+s+weekdate[week];
+		setTimeout(showtime,500);
+		document.getElementById('show1').innerHTML='还剩'+show2+'天'+showhour+'时'+showminute+'分'+showsecond+'秒';
+	}
+</script>
+</head>
+<body>
+    <div id=show></div>
+    <div id=show1>倒计时</div>
+</body>
+</html>
